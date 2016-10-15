@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<title>Omat tietosi</title>
+
+<link rel="icon" href="https://www.karilaalo.fi/assets/favicon.ico" />
+<link rel="apple-touch-icon" href="https://www.karilaalo.fi/assets/touch-icon.png" />
+<link rel="stylesheet" href="//code.cdn.mozilla.net/fonts/fira.css" />
+<link rel="stylesheet" href="https://www.karilaalo.fi/assets/core.css" />
+<link rel="canonical" href="https://www.karilaalo.fi/" />
+
+<style>
+td {
+	border-bottom: 1px dotted gainsboro;
+}
+table {
+	table-layout: auto;
+}
+a:has(img) {
+	border: none; 
+}
+a:hover > img {
+	border: 4px solid DarkBlue;
+}
+img {
+	width: 75px;
+	border-radius: 15px;
+	border: 2px solid DarkMagenta;
+	margin-right: 1.5em;"
+}
+</style>
+
+    </head>
+<body>
+
+<aside class="contact" style="text-align: right;">
+<a href="https://trin.karilaalo.fi/">Ota yhteyttä</a>
+</aside>
+<aside class="logo" style="position: relative;"> <a href="https://www.karilaalo.fi/"> <img src="//www.gravatar.com/avatar/5e91ce99cfb566f1ec553177edd55033.png?s=80" class="gravatar" alt="profile image" /> </a> <span class="logo-prompt">Etusivulle</span></aside>
+<main>
+<section style="max-width: 95%;">
+   	<div class="col-md-12">
+		<h1>Omat tietosi</h1>
+		<table>
+		<thead><tr>
+			<th>Tieto</th>
+			<th>Arvo</th>
+		</tr></thead>
+		<tbody>
+			<tr><td>requestUrl</td><td th:text="${#httpServletRequest.requestURI}"></td></tr>
+			<tr>
+				<td>hostname</td>
+				<td th:text="${T(java.net.InetAddress).getByName(addr).getHostName()}"></td>
+			</tr>
+			<tr><td>IP-osoite</td><td th:text="${addr}"></td></tr>
+			<tr>
+				<td>user-agent</td>
+				<td th:text="${#httpServletRequest.getHeader('user-agent')}"></td>
+			</tr>
+			<tr>
+				<td>IP-osoiteversio</td>
+				<td th:text="${T(java.net.Inet6Address).class.isAssignableFrom(
+							T(java.net.InetAddress).getByName(addr).getClass())
+							? 'IPv6' : 'IPv4'}"></td>
+			</tr>
+			<tr>
+				<td>Session alku</td>
+				<td th:if="${#httpSession}"
+					th:text="${#dates.formatISO(#httpSession.creationTime)}"></td>
+			</tr>
+			<tr>
+				<td>Session userString</td>
+				<td>
+					<form th:action="@{info.html}" method="post">
+						<input type="text" name="userStr"
+							th:value="${session.userStr}" 
+							style="width: 100%;"/> 
+					</form>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+
+		<div th:if="${isAuth}" >
+		<h2 >User</h2>
+		<p>
+			<a th:if="${#authentication.details.containsKey('profile')}"
+				th:href="${#authentication.details.get('profile')}"
+				style="border: none;" >
+				<img th:if="${#authentication.details.containsKey('picture')}"
+					th:src="${#authentication.details.get('picture')}"  />
+			</a>
+			<img th:if="${#authentication.details.containsKey('picture')}"
+				th:unless="${#authentication.details.containsKey('profile')}"
+				th:src="${#authentication.details.get('picture')}" />
+			<span th:text="${#authentication.principal}"></span> 
+		</p>
+		<table>
+			<thead>
+				<th>Key</th>
+				<th>Value</th>
+			</thead>
+			<tbody>
+				<tr th:each="key : ${#authentication.details.keySet()}">
+					<td th:text="${key}"></td>
+					<td th:text="${#authentication.details.get(key)}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<div th:if="${superAdmin}">	
+		<h2>Headers</h2>
+		<table>
+			<thead>
+				<th>HeaderName</th>
+				<th>HeaderValue</th>
+			</thead>
+			<tbody>
+			<tr th:each="header : ${T(java.util.Collections).list(#httpServletRequest.getHeaderNames())}"
+				th:unless="${@reqAuthConfiguration.matchesToHideList(header)}"
+			 >
+				<td th:text="${header}"></td>
+				<td
+					th:text="${#httpServletRequest.getHeader(header)}"
+					>empty</td>
+			</tr>
+			</tbody>
+		</table>
+		<h2>System Environment</h2>
+		<table>
+			<thead>
+				<th>Key</th>
+				<th>Value</th>
+			</thead>
+			<tbody>
+				<tr th:each="key : ${@environment.getSystemEnvironment().keySet()}">
+					<td th:text="${key}">empty</td>
+					<td th:text="${@environment.getSystemEnvironment().get(key)}"></td> 
+				</tr>
+			</tbody>
+		</table>
+		</div>
+		</div>
+
+	</div>
+</section>
+</main>
+</body>
+</html>
