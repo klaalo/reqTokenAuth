@@ -6,3 +6,5 @@
 Token authentication implementation for Spring Boot.
 
 For now, see [JavaDoc](http://www.karilaalo.fi/reqTokenAuth/apidocs/) for more information.
+
+[Live Demo](https://trin.karilaalo.fi/oma/info.html)
