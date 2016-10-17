@@ -3,4 +3,6 @@
 
 # RequestToken authentication
 
-Token authentication implementation for Spring Boot
+Token authentication implementation for Spring Boot.
+
+For now, see [JavaDoc](http://www.karilaalo.fi/reqTokenAuth/apidocs/) for more information.
