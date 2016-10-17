@@ -27,6 +27,7 @@ public class UserInfoController {
 
 	private static final String SESS_USER_STR = "userStr";
 	private static final String INFO_TMPL = "info";
+	public static final String USR_STR_PAR_NAME = "userStr";
 
 	@Autowired
 	private ReqAuthConfiguration authConf;
@@ -109,7 +110,7 @@ public class UserInfoController {
 	 */
 	@PostMapping("/info")
 	public String postInfo(Model model, HttpServletRequest req,
-			@RequestParam("userStr") String userStr,
+			@RequestParam(USR_STR_PAR_NAME) String userStr,
 			HttpSession session) {
 		PolicyFactory policy = Sanitizers.FORMATTING;
 		session.setAttribute(SESS_USER_STR, policy.sanitize(userStr));
@@ -125,7 +126,7 @@ public class UserInfoController {
 	 */
 	@PostMapping("/oma/info")
 	public String postOmaInfo(Model model, HttpServletRequest req,
-			@RequestParam("userStr") String userStr,
+			@RequestParam(USR_STR_PAR_NAME) String userStr,
 			HttpSession session,
 			Authentication auth) {
 		PolicyFactory policy = Sanitizers.FORMATTING;
