@@ -7,6 +7,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+/**
+ * 
+ * <p>Basic Spring-Security 
+ * <code>WebSecurityConfigurerAdapter</code> adds the
+ * <code>ReqAuthFilter</code> to the filter chain. Order
+ * of the filters in the chain is important.</p>
+ * 
+ */
 @EnableWebSecurity
 public class UserInfoSecConfigurer extends WebSecurityConfigurerAdapter {
 
@@ -14,8 +22,22 @@ public class UserInfoSecConfigurer extends WebSecurityConfigurerAdapter {
 	private AuthenticationProvider authProv;
 	
 	@Autowired
-	ReqAuthConfiguration authConf;
+	private ReqAuthConfiguration authConf;
 	
+	/**
+	 * 
+	 * <p>The actual overridden 
+	 * <a href="http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#jc-httpsecurity">
+	 * configure</a> method.</p>
+	 * 
+	 * <p>Proper authenticationFilter object might have been
+	 * more elegant and if implemented as component it would
+	 * have been recognised and added to filter chain
+	 * automatically at the time of context initialisation.
+	 * Now that it is a once per request filter, it
+	 * need to be added in the security configurer.</p> 
+	 * 
+	 */
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http
