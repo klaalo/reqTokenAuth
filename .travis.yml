@@ -3,4 +3,7 @@ jdk:
     - oraclejdk8
 after_success:
     - mvn clean verify coveralls:report
-    
+branches:
+    except:
+        - gh-pages
+        
