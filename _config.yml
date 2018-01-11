@@ -1,0 +1,8 @@
+title: Reqtokenauth
+description: Token authentication implementation for Spring Boot
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-minimal
+
+gems:
+  - jekyll-mentions
